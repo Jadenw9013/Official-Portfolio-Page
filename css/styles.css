@@ -11732,3 +11732,179 @@ html {
     left: -2vw;
   }
 }
+
+/* === Jaden Dark Pro (Deep Navy + Emerald) — color-only overrides === */
+:root{
+  --bs-primary:#17425e;           /* Deep Navy */
+  --bs-secondary:#19b394;         /* Emerald/Teal */
+  --bs-background:#101820;
+  --bs-foreground:#f4f4f4;
+  --bs-link-color:#19b394;
+  --bs-link-hover-color:#146c5c;
+  --bs-card-bg:#18222c;
+  --bs-card-color:#f4f4f4;
+  --bs-border-color:#222b36;
+  --bs-gradient:linear-gradient(135deg,#17425e 0%,#19b394 100%);
+  --bs-navbar-bg:rgba(16,24,32,.92);
+}
+
+/* Page base */
+body{ background:var(--bs-background)!important; color:var(--bs-foreground)!important; }
+
+/* Accessible focus rings */
+:focus-visible{ outline:3px solid var(--bs-secondary); outline-offset:3px; }
+.navbar .nav-link:focus-visible,
+.btn:focus-visible,
+a:focus-visible{ text-decoration:none; }
+
+/* Navbar */
+.navbar{ background:var(--bs-navbar-bg)!important; backdrop-filter:blur(8px); box-shadow:0 2px 16px rgba(0,0,0,.08); }
+.navbar .navbar-brand{ color:#19b394!important; font-weight:700; letter-spacing:.04em; }
+.navbar .navbar-brand:hover{ color:#146c5c!important; }
+.navbar .nav-link{ color:#f4f4f4!important; font-weight:600; border-radius:.5rem; padding:.5rem 1rem; }
+.navbar .nav-link:hover{ color:#19b394!important; background:rgba(25,179,148,.08); }
+.navbar .nav-link.active{ color:#19b394!important; background:rgba(25,179,148,.15); }
+
+/* Header gradient badge + gradient text */
+.bg-gradient-primary-to-secondary{ background:var(--bs-gradient)!important; }
+.text-gradient{
+  background:-webkit-linear-gradient(315deg,#19b394 0%,#17425e 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+
+/* Cards & “light” sections -> dark surfaces */
+.card, .bg-light, .bg-white{
+  background-color:var(--bs-card-bg)!important;
+  color:var(--bs-card-color)!important;
+  border-color:var(--bs-border-color)!important;
+  box-shadow:0 2px 16px rgba(0,0,0,.08);
+}
+
+/* Links */
+a{ color:var(--bs-link-color); text-decoration:underline; }
+a:hover{ color:var(--bs-link-hover-color); }
+
+/* Buttons */
+.btn-primary{ background:#19b394!important; border-color:#19b394!important; color:#0b1220!important; font-weight:600; }
+.btn-primary:hover{ background:#146c5c!important; border-color:#146c5c!important; color:#fff!important; }
+.btn-outline-dark{ color:#19b394!important; border-color:#19b394!important; }
+.btn-outline-dark:hover{ background:#19b394!important; color:#fff!important; border-color:#19b394!important; }
+
+/* Forms */
+.form-control, .form-select, .input-group-text{
+  background:#0f1620!important; color:var(--bs-foreground)!important; border-color:#243142!important;
+}
+.form-control:focus, .form-select:focus{
+  border-color:#19b394!important; box-shadow:0 0 0 .25rem rgba(25,179,148,.2)!important;
+}
+
+/* Feature pill (skills icons) */
+.feature{ background:#113246!important; color:#e9fbf6!important; }
+
+/* Footer */
+footer{ background:#141d28!important; color:var(--bs-foreground)!important; }
+footer a{ color:#a9ffea!important; }
+footer a:hover{ color:#19b394!important; }
+
+/* Muted text adjusted for dark contrast */
+.text-muted{ color:#b3bdc7!important; }
+
+/* Back-to-top floating button */
+.back-to-top{
+  position:fixed; right:20px; bottom:20px; width:48px; height:48px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%; background:#19b394; color:#0b1220; box-shadow:0 6px 20px rgba(0,0,0,.3);
+}
+.back-to-top:hover{ background:#146c5c; color:#fff; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; scroll-behavior:auto!important; }
+}
+
+/* ===== Fix resume cards contrast (dark, accessible) ===== */
+
+/* Card surface */
+.card {
+  background-color: #18222c !important;   /* #18222c */
+  color: var(--bs-card-color) !important;           /* #f4f4f4 */
+  border: 1px solid var(--bs-border-color) !important; /* #222b36 */
+  box-shadow: 0 6px 24px rgba(0,0,0,.18) !important;
+}
+
+/* Ensure body text is readable */
+.card p,
+.card li,
+.card .text-muted,
+.card small {
+  color: #e1e6eb !important; /* high-contrast on #18222c */
+}
+
+/* Neutralize any opacity utilities that make text too faint */
+.card .opacity-25,
+.card .opacity-50,
+.card .opacity-75,
+.card [style*="opacity"] {
+  opacity: 1 !important;
+}
+
+/* Headings within cards */
+.card h3, .card h4, .card h5, .card h6 {
+  color: var(--bs-foreground) !important;
+}
+
+/* Links inside cards */
+.card a { color: var(--bs-link-color) !important; }
+.card a:hover { color: var(--bs-link-hover-color) !important; }
+
+/* The small “date/company” pill blocks on the left column */
+.card .bg-white,
+.card .bg-light {
+  background-color: #0f1620 !important;           /* dark pill */
+  color: var(--bs-foreground) !important;
+  border: 1px solid #243142 !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03),
+              0 4px 14px rgba(0,0,0,.35) !important;
+}
+
+/* Focus visibility for keyboard users */
+.card:focus-within {
+  outline: 3px solid var(--bs-secondary);
+  outline-offset: 2px;
+}
+
+.svg-dots { display:block; color: rgba(25,179,148,.28); }        /* default teal */
+.svg-dots path { fill: currentColor !important; }
+
+/* === Kill remaining Bootstrap blue & retheme to Emerald/Navy === */
+
+/* Headings/titles that used .text-primary */
+.text-primary { color: var(--bs-secondary) !important; }
+.link-primary { color: var(--bs-secondary) !important; }
+.link-primary:hover,
+.link-primary:focus { color: var(--bs-link-hover-color) !important; }
+
+/* Brand/logo (left “JW”) */
+.navbar .navbar-brand,
+.navbar .navbar-brand * {
+  color: #19b394 !important;     /* #19b394 */
+}
+.navbar .navbar-brand:hover,
+.navbar .navbar-brand:focus,
+.navbar .navbar-brand:hover * {
+  color: var(--bs-navbar-brand-hover-color) !important; /* #146c5c */
+}
+
+/* If any titles still apply bg/outline utilities */
+.bg-primary    { background-color: var(--bs-primary) !important; }
+.border-primary{ border-color: var(--bs-secondary) !important; }
+
+/* Badges, pills, etc. */
+.badge.bg-primary { 
+  background-color: var(--bs-secondary) !important; 
+  color: #fff !important;
+}
+
+/* Icons/SVGs that rely on .text-primary for color */
+svg.text-primary,
+.text-primary svg { color: var(--bs-secondary) !important; }
