@@ -45,12 +45,18 @@
     <!-- ===== Hero ===== -->
     <section id="hero" class="hero">
       <div class="hero__bg" aria-hidden="true"></div>
+      <div class="hero__bg-orb" aria-hidden="true"></div>
+      <div class="hero__grid" aria-hidden="true"></div>
       <div class="container hero__inner">
         <div class="hero__content">
-          <span class="hero__badge">AI &middot; Development &middot; Security</span>
-          <p class="hero__subtitle">Software Engineer</p>
+          <div class="hero__status">
+            <span class="hero__status-dot"></span>
+            Open to Opportunities
+          </div>
+          <span class="hero__badge">AI &middot; Full-Stack &middot; Cloud</span>
+          <p class="hero__subtitle" id="hero-subtitle"></p>
           <h1 class="hero__name"><span class="text-gradient">Jaden Wong</span></h1>
-          <p class="hero__description">CS senior at Seattle University building AI-powered applications with Next.js, React, and OpenAI. Currently a SWE volunteer at Street Grace.</p>
+          <p class="hero__description">CS senior at Seattle University building AI-powered applications with Next.js, React, and OpenAI. Currently a SWE intern at Street Grace.</p>
           <div class="hero__ctas">
             <a href="#projects" class="btn btn--primary">View Projects</a>
             <a href="https://docs.google.com/document/d/1eOeCMDTQNx7UPudLn9bDFEuxkNFLgbjVByNYgDOos68/edit?usp=sharing" class="btn btn--secondary" target="_blank" rel="noopener noreferrer">
@@ -62,11 +68,25 @@
             <a href="https://www.linkedin.com/in/jadenawong/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
             <a href="https://www.instagram.com/jaden.w0ng/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
           </div>
+          <div class="hero__stats">
+            <div class="hero__stat">
+              <div class="hero__stat-number">7+</div>
+              <div class="hero__stat-label">Projects Built</div>
+            </div>
+            <div class="hero__stat">
+              <div class="hero__stat-number">3+</div>
+              <div class="hero__stat-label">Years Coding</div>
+            </div>
+            <div class="hero__stat">
+              <div class="hero__stat-number">6+</div>
+              <div class="hero__stat-label">Technologies</div>
+            </div>
+          </div>
         </div>
         <div class="hero__image">
           <div class="hero__image-glow" aria-hidden="true"></div>
           <div class="hero__image-wrapper">
-            <img src="assets/profile.png" alt="Jaden Wong" width="340" height="340" />
+            <img src="assets/profile.png" alt="Jaden Wong" width="360" height="360" />
           </div>
         </div>
       </div>
@@ -90,7 +110,7 @@
           <div class="about__text">
             <p>I'm a <span class="about__highlight">Senior at Seattle University</span> pursuing a degree in Computer Science with a business specialization. I'm planning to pursue a master's in ML/AI.</p>
             <p>
-              I currently work as a <span class="about__highlight">Software Engineering Intern</span> at 
+              I currently work as a <span class="about__highlight">Software Engineering Intern</span> at
               <span class="about__highlight">Street Grace</span>, contributing to secure, scalable software systems that support data-driven efforts to protect vulnerable youth.
             </p>
 
@@ -307,7 +327,7 @@
         </div>
 
         <!-- Experience -->
-        <h3 class="h3" style="margin-bottom: var(--space-lg); color: var(--color-accent);">Experience</h3>
+        <h3 class="exp-heading reveal">Experience</h3>
         <div class="exp-list" style="margin-bottom: var(--space-3xl);">
 
           <div class="exp-card reveal">
@@ -357,7 +377,7 @@
         </div>
 
         <!-- Education -->
-        <h3 class="h3" style="margin-bottom: var(--space-lg); color: var(--color-accent);">Education</h3>
+        <h3 class="exp-heading reveal">Education</h3>
         <div class="edu-grid">
 
           <div class="edu-card reveal">
