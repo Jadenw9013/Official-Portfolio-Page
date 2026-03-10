@@ -1,444 +1,1176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Jaden Wong — Software Engineer specializing in AI-powered applications. Seattle University CS senior building with Next.js, React, and OpenAI." />
-  <meta name="author" content="Jaden Wong" />
-  <title>Jaden Wong — Software Engineer</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jaden Wong — Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="assets/muscle.png" />
+:root {
+  --bg: #0a0a0a;
+  --bg2: #111111;
+  --ink: #f0ede8;
+  --muted: #5a5750;
+  --accent: #e8c87a;
+  --accent2: #7a9ee8;
+  --border: rgba(240,237,232,0.07);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --mono: 'Geist Mono', 'Courier New', monospace;
+}
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+html { scroll-behavior: smooth; }
 
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-weight: 300;
+  font-size: 14px;
+  overflow-x: hidden;
+  cursor: none;
+}
 
-  <!-- Custom Styles -->
-  <link href="css/styles.css" rel="stylesheet" />
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 128px;
+}
+
+/* ── CURSOR ── */
+#cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, background 0.2s, width 0.2s, height 0.2s;
+  mix-blend-mode: normal;
+}
+#cursor-ring {
+  position: fixed;
+  width: 32px; height: 32px;
+  border: 1px solid rgba(232,200,122,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: width 0.35s cubic-bezier(.23,1,.32,1), height 0.35s cubic-bezier(.23,1,.32,1), border-color 0.3s;
+}
+.cursor-expanded #cursor-ring {
+  width: 56px; height: 56px;
+  border-color: rgba(232,200,122,0.9);
+}
+.cursor-link #cursor { background: var(--accent2); transform: translate(-50%,-50%) scale(1.4); }
+
+/* ── CANVAS ── */
+#particle-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.8rem 4rem;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s, background 0.3s;
+}
+nav.scrolled {
+  border-color: var(--border);
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(16px);
+}
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.nav-logo span { color: var(--accent); font-style: italic; }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-cta {
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--ink) !important;
+  transition: background 0.2s, border-color 0.2s !important;
+}
+.nav-cta:hover { background: var(--accent) !important; color: var(--bg) !important; border-color: var(--accent) !important; }
+
+/* ── SECTIONS ── */
+section { position: relative; z-index: 1; }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 4rem 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: up 0.7s 0.3s ease forwards;
+}
+.hero-badge::before {
+  content: '';
+  display: block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+
+.hero-name {
+  font-family: var(--serif);
+  font-size: clamp(4rem, 10vw, 9.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(24px);
+  animation: up 0.9s 0.45s ease forwards;
+}
+.hero-name em {
+  font-style: italic;
+  color: var(--accent);
+  display: block;
+}
+
+.hero-tagline {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  max-width: 44ch;
+  line-height: 1.9;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: up 0.7s 0.65s ease forwards;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 2.5rem;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: up 0.7s 0.8s ease forwards;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.8rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: 0.2s ease;
+  cursor: none;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+}
+.btn-primary:hover { background: #f0d890; gap: 1rem; }
+.btn-ghost {
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.btn-ghost:hover { border-color: var(--muted); color: var(--ink); }
+
+.hero-stats {
+  position: absolute;
+  right: 4rem;
+  bottom: 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  text-align: right;
+  opacity: 0;
+  animation: up 0.7s 1s ease forwards;
+}
+.stat-num {
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0;
+  animation: up 0.7s 1.2s ease forwards;
+}
+.scroll-track {
+  width: 1px; height: 40px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-track::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  animation: scrollDrop 1.8s 1.5s ease infinite;
+}
+@keyframes scrollDrop {
+  0% { top: -100%; }
+  100% { top: 100%; }
+}
+
+/* ── ABOUT ── */
+#about {
+  padding: 10rem 4rem;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 8rem;
+  align-items: start;
+}
+.section-eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.section-eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  max-width: 40px;
+}
+.about-headline {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin-bottom: 2rem;
+}
+.about-body {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.9;
+  letter-spacing: 0.03em;
+}
+.about-body a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(232,200,122,0.3);
+  transition: border-color 0.2s;
+}
+.about-body a:hover { border-color: var(--accent); }
+
+.about-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.fact-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.7rem;
+  transition: background 0.2s;
+}
+.fact-row:last-child { border-bottom: none; }
+.fact-row:hover { background: var(--bg2); }
+.fact-key { color: var(--muted); letter-spacing: 0.08em; }
+.fact-val { color: var(--ink); text-align: right; }
+.fact-val .tag {
+  display: inline-block;
+  background: rgba(232,200,122,0.1);
+  color: var(--accent);
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  margin-left: 0.3rem;
+}
+
+/* ── EXPERIENCE ── */
+#experience {
+  padding: 6rem 4rem;
+  border-top: 1px solid var(--border);
+}
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4rem;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: -0.02em;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+.exp-item {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 3rem;
+  padding: 2.5rem 0 2.5rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.exp-item::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 2.8rem;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--muted);
+  transition: background 0.2s, border-color 0.2s;
+}
+.exp-item:hover::before { background: var(--accent); border-color: var(--accent); }
+
+.exp-meta { padding-top: 0.2rem; }
+.exp-date {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.exp-company {
+  font-size: 0.72rem;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+.exp-role {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+.exp-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.exp-bullets li {
+  font-size: 0.7rem;
+  color: var(--muted);
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  padding-left: 1.2em;
+  position: relative;
+}
+.exp-bullets li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* ── PROJECTS ── */
+#projects {
+  padding: 6rem 4rem 10rem;
+  border-top: 1px solid var(--border);
+}
+.projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4rem;
+}
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.card {
+  background: var(--bg);
+  padding: 2.2rem;
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+  transition: background 0.3s;
+  opacity: 0;
+  transform: translateY(24px);
+}
+.card.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s;
+}
+.card:hover { background: #0f0f0f; }
+
+.card-inner { transition: transform 0.2s ease; }
+
+.card-index {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+.card-tag {
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  border: 1px solid rgba(122,158,232,0.25);
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+}
+.card-title {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-bottom: 0.8rem;
+}
+.card-desc {
+  font-size: 0.68rem;
+  color: var(--muted);
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+}
+.card-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.stack-pill {
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+}
+.card-link {
+  position: absolute;
+  top: 1.8rem; right: 1.8rem;
+  width: 28px; height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: all 0.2s;
+  opacity: 0;
+  transform: scale(0.8);
+}
+.card:hover .card-link {
+  opacity: 1;
+  transform: scale(1);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── SKILLS ── */
+#skills {
+  padding: 6rem 4rem;
+  border-top: 1px solid var(--border);
+}
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 3rem;
+}
+.skill-group {
+  background: var(--bg);
+  padding: 2rem;
+}
+.skill-group-title {
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.2rem;
+}
+.skill-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.skill-item {
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s, padding-left 0.2s;
+}
+.skill-item:last-child { border-bottom: none; }
+.skill-item:hover { color: var(--ink); padding-left: 0.4rem; }
+
+/* ── CONTACT ── */
+#contact {
+  padding: 10rem 4rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+#contact::before {
+  content: 'CONTACT';
+  position: absolute;
+  font-family: var(--serif);
+  font-size: 22vw;
+  font-style: italic;
+  color: rgba(240,237,232,0.02);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  white-space: nowrap;
+}
+.contact-eyebrow {
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+.contact-title {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+.contact-title em { font-style: italic; color: var(--accent); }
+.contact-sub {
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 3rem;
+}
+.contact-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.contact-link {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.contact-link:hover { color: var(--ink); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 1.8rem 4rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+/* ── REVEALS ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── KEYFRAMES ── */
+@keyframes up {
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
 </head>
 <body>
 
-  <!-- ===== Navigation ===== -->
-  <nav class="nav" role="navigation" aria-label="Main navigation">
-    <div class="container nav__inner">
-      <a href="index.html" class="nav__brand" aria-label="Home">JW</a>
-      <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
-        <i class="bi bi-list"></i>
-      </button>
-      <ul id="nav-links" class="nav__links">
-        <li><a href="#hero" class="nav__link active">Home</a></li>
-        <li><a href="#about" class="nav__link">About</a></li>
-        <li><a href="#projects" class="nav__link">Projects</a></li>
-        <li><a href="#experience" class="nav__link">Experience</a></li>
-        <li><a href="#contact" class="nav__link">Contact</a></li>
-      </ul>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="particle-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Jaden <span>Wong</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-badge">Open to Opportunities · 2025</p>
+  <h1 class="hero-name">
+    Jaden<br>
+    <em>Wong.</em>
+  </h1>
+  <p class="hero-tagline">
+    CS Senior at Seattle University. Building AI-powered applications,<br>
+    AR systems, and full-stack platforms that solve real problems.
+  </p>
+  <div class="hero-actions">
+    <a href="#projects" class="btn btn-primary">View Work →</a>
+    <a href="https://docs.google.com/document/d/1eOeCMDTQNx7UPudLn9bDFEuxkNFLgbjVByNYgDOos68" target="_blank" class="btn btn-ghost">Resume ↗</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">7+</div>
+      <div class="stat-label">Projects</div>
     </div>
-  </nav>
+    <div>
+      <div class="stat-num">3+</div>
+      <div class="stat-label">Years Coding</div>
+    </div>
+    <div>
+      <div class="stat-num">3.6</div>
+      <div class="stat-label">GPA · Dean's List</div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-track"></div>
+    Scroll
+  </div>
+</section>
 
-  <main>
+<!-- ABOUT -->
+<section id="about">
+  <div>
+    <p class="section-eyebrow reveal">01 — About</p>
+    <h2 class="about-headline reveal" style="transition-delay:0.1s">
+      Building at the intersection of<br>AI and human experience.
+    </h2>
+    <p class="about-body reveal" style="transition-delay:0.2s">
+      I'm a Senior at Seattle University pursuing B.S. Computer Science with a Business minor.
+      I currently intern at <a href="https://streetgrace.org" target="_blank">Street Grace</a> — a nonprofit fighting child exploitation —
+      where I build secure analytics systems that protect vulnerable youth.<br><br>
+      I'm passionate about AI's potential to solve real problems. Planning to pursue a master's in ML/AI.
+      Always looking to collaborate on things that matter.
+    </p>
+  </div>
+  <div class="about-facts reveal" style="transition-delay:0.15s">
+    <div class="fact-row">
+      <span class="fact-key">Location</span>
+      <span class="fact-val">Seattle, WA</span>
+    </div>
+    <div class="fact-row">
+      <span class="fact-key">School</span>
+      <span class="fact-val">Seattle University</span>
+    </div>
+    <div class="fact-row">
+      <span class="fact-key">Degree</span>
+      <span class="fact-val">B.S. Computer Science</span>
+    </div>
+    <div class="fact-row">
+      <span class="fact-key">Graduation</span>
+      <span class="fact-val">June 2026</span>
+    </div>
+    <div class="fact-row">
+      <span class="fact-key">GPA</span>
+      <span class="fact-val">3.60 <span class="tag">Dean's List</span></span>
+    </div>
+    <div class="fact-row">
+      <span class="fact-key">Currently</span>
+      <span class="fact-val">SWE Intern @ Street Grace</span>
+    </div>
+    <div class="fact-row">
+      <span class="fact-key">Focus Areas</span>
+      <span class="fact-val">AI · Full-Stack · AR</span>
+    </div>
+    <div class="fact-row">
+      <span class="fact-key">Availability</span>
+      <span class="fact-val"><span class="tag">Open to Offers</span></span>
+    </div>
+  </div>
+</section>
 
-    <!-- ===== Hero ===== -->
-    <section id="hero" class="hero">
-      <div class="hero__bg" aria-hidden="true"></div>
-      <div class="hero__bg-orb" aria-hidden="true"></div>
-      <div class="hero__grid" aria-hidden="true"></div>
-      <div class="container hero__inner">
-        <div class="hero__content">
-          <div class="hero__status">
-            <span class="hero__status-dot"></span>
-            Open to Opportunities
-          </div>
-          <span class="hero__badge">AI &middot; Full-Stack &middot; Cloud</span>
-          <p class="hero__subtitle" id="hero-subtitle"></p>
-          <h1 class="hero__name"><span class="text-gradient">Jaden Wong</span></h1>
-          <p class="hero__description">CS senior at Seattle University building AI-powered applications with Next.js, React, and OpenAI. Currently a SWE intern at Street Grace.</p>
-          <div class="hero__ctas">
-            <a href="#projects" class="btn btn--primary">View Projects</a>
-            <a href="https://docs.google.com/document/d/1eOeCMDTQNx7UPudLn9bDFEuxkNFLgbjVByNYgDOos68/edit?usp=sharing" class="btn btn--secondary" target="_blank" rel="noopener noreferrer">
-              <i class="bi bi-download"></i> Resume
-            </a>
-          </div>
-          <div class="hero__social">
-            <a href="https://github.com/Jadenw9013" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="bi bi-github"></i></a>
-            <a href="https://www.linkedin.com/in/jadenawong/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-            <a href="https://www.instagram.com/jaden.w0ng/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-          </div>
-          <div class="hero__stats">
-            <div class="hero__stat">
-              <div class="hero__stat-number">7+</div>
-              <div class="hero__stat-label">Projects Built</div>
-            </div>
-            <div class="hero__stat">
-              <div class="hero__stat-number">3+</div>
-              <div class="hero__stat-label">Years Coding</div>
-            </div>
-            <div class="hero__stat">
-              <div class="hero__stat-number">6+</div>
-              <div class="hero__stat-label">Technologies</div>
-            </div>
-          </div>
-        </div>
-        <div class="hero__image">
-          <div class="hero__image-glow" aria-hidden="true"></div>
-          <div class="hero__image-wrapper">
-            <img src="assets/profile.png" alt="Jaden Wong" width="360" height="360" />
-          </div>
-        </div>
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="exp-header">
+    <h2 class="section-title reveal">Experience</h2>
+    <span class="reveal" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);transition-delay:0.1s">03 Roles</span>
+  </div>
+  <div class="timeline">
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <p class="exp-date">Dec 2024 – Present</p>
+        <p class="exp-company">Street Grace</p>
       </div>
-      <div class="hero__scroll" aria-hidden="true">
-        <span>Scroll</span>
-        <div class="hero__scroll-line"></div>
-      </div>
-    </section>
-
-    <!-- ===== About ===== -->
-    <section id="about" class="section section--alt">
-      <div class="container container--narrow">
-        <div class="section-header reveal">
-          <span class="section-label">About Me</span>
-          <h2 class="section-title">Building at the intersection of AI and software</h2>
-        </div>
-        <div class="about__inner reveal">
-          <div class="about__image">
-            <img src="assets/profile.png" alt="Jaden Wong" loading="lazy" width="240" height="240" />
-          </div>
-          <div class="about__text">
-            <p>I'm a <span class="about__highlight">Senior at Seattle University</span> pursuing a degree in Computer Science with a business specialization. I'm planning to pursue a master's in ML/AI.</p>
-            <p>
-              I currently work as a <span class="about__highlight">Software Engineering Intern</span> at
-              <span class="about__highlight">Street Grace</span>, contributing to secure, scalable software systems that support data-driven efforts to protect vulnerable youth.
-            </p>
-
-            <p>I'm passionate about using AI to solve real problems and always looking for opportunities to learn and collaborate.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== Projects ===== -->
-    <section id="projects" class="section">
-      <div class="container">
-        <div class="section-header reveal">
-          <span class="section-label">Featured Work</span>
-          <h2 class="section-title">Projects</h2>
-        </div>
-        <div class="projects-grid reveal-stagger">
-
-          <!-- AI Notes -->
-          <article class="card project-card reveal">
-            <div class="project-card__image">
-              <img src="assets/notes.png" alt="AI Notes application screenshot" loading="lazy" />
-              <div class="project-card__overlay">
-                <a href="https://ai-notes-ashy.vercel.app/" class="project-card__overlay-link" target="_blank" rel="noopener noreferrer" aria-label="View AI Notes project">
-                  <i class="bi bi-arrow-up-right"></i>
-                </a>
-              </div>
-            </div>
-            <div class="project-card__content">
-              <h3 class="project-card__title">AI Notes</h3>
-              <p class="project-card__desc">AI-powered note-taking application that lets users type or upload PDFs into a smart text editor, where the AI can enhance, expand, and refine content in real time.</p>
-              <div class="project-card__tags">
-                <span class="tag">Next.js</span>
-                <span class="tag">React</span>
-                <span class="tag">OpenAI</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- AI Macro Maker -->
-          <article class="card project-card reveal">
-            <div class="project-card__image">
-              <img src="assets/gym-bro.png" alt="AI Macro Maker meal planner screenshot" loading="lazy" />
-              <div class="project-card__overlay">
-                <a href="https://meal-planner-two-tan.vercel.app/" class="project-card__overlay-link" target="_blank" rel="noopener noreferrer" aria-label="View AI Macro Maker project">
-                  <i class="bi bi-arrow-up-right"></i>
-                </a>
-              </div>
-            </div>
-            <div class="project-card__content">
-              <h3 class="project-card__title">AI Macro Maker</h3>
-              <p class="project-card__desc">A meal planner that collects user stats and uses OpenAI to generate a personalized meal plan with macro breakdowns.</p>
-              <div class="project-card__tags">
-                <span class="tag">Next.js</span>
-                <span class="tag">TypeScript</span>
-                <span class="tag">OpenAI</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- AI Weather App -->
-          <article class="card project-card reveal">
-            <div class="project-card__image">
-              <img src="assets/weather.png" alt="AI Weather App screenshot" loading="lazy" />
-              <div class="project-card__overlay">
-                <a href="https://updated-ai-weather-app.vercel.app/" class="project-card__overlay-link" target="_blank" rel="noopener noreferrer" aria-label="View AI Weather App project">
-                  <i class="bi bi-arrow-up-right"></i>
-                </a>
-              </div>
-            </div>
-            <div class="project-card__content">
-              <h3 class="project-card__title">AI Weather App</h3>
-              <p class="project-card__desc">Weather app using OpenAI and OpenWeather API to display current conditions and suggest activities based on the forecast.</p>
-              <div class="project-card__tags">
-                <span class="tag">Next.js</span>
-                <span class="tag">TypeScript</span>
-                <span class="tag">OpenAI</span>
-                <span class="tag">OpenWeather</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- AI Flashcard Generator -->
-          <article class="card project-card reveal">
-            <div class="project-card__image">
-              <img src="assets/FlashAi.png" alt="AI Flashcard Generator screenshot" loading="lazy" />
-              <div class="project-card__overlay">
-                <a href="https://ai-flashcards-drab.vercel.app/" class="project-card__overlay-link" target="_blank" rel="noopener noreferrer" aria-label="View AI Flashcard Generator project">
-                  <i class="bi bi-arrow-up-right"></i>
-                </a>
-              </div>
-            </div>
-            <div class="project-card__content">
-              <h3 class="project-card__title">AI Flashcard Generator</h3>
-              <p class="project-card__desc">Generate study flashcards from any topic using OpenAI, with user authentication via Clerk and data persistence through Firebase.</p>
-              <div class="project-card__tags">
-                <span class="tag">Next.js</span>
-                <span class="tag">OpenAI</span>
-                <span class="tag">Firebase</span>
-                <span class="tag">Clerk</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- AI Resume Assistant -->
-          <article class="card project-card reveal">
-            <div class="project-card__image">
-              <img src="assets/AI-resume.png" alt="AI Resume Assistant screenshot" loading="lazy" />
-              <div class="project-card__overlay">
-                <a href="https://ai-assistant-azure.vercel.app/" class="project-card__overlay-link" target="_blank" rel="noopener noreferrer" aria-label="View AI Resume Assistant project">
-                  <i class="bi bi-arrow-up-right"></i>
-                </a>
-              </div>
-            </div>
-            <div class="project-card__content">
-              <h3 class="project-card__title">AI Resume Assistant</h3>
-              <p class="project-card__desc">An AI chatbot that answers questions about my resume using Google Gemini's API, providing conversational access to my experience.</p>
-              <div class="project-card__tags">
-                <span class="tag">React</span>
-                <span class="tag">Node.js</span>
-                <span class="tag">Google Gemini</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Pantry Tracker -->
-          <article class="card project-card reveal">
-            <div class="project-card__image">
-              <img src="assets/pantry.png" alt="Pantry Tracker screenshot" loading="lazy" />
-              <div class="project-card__overlay">
-                <a href="https://project2-rho-six.vercel.app/" class="project-card__overlay-link" target="_blank" rel="noopener noreferrer" aria-label="View Pantry Tracker project">
-                  <i class="bi bi-arrow-up-right"></i>
-                </a>
-              </div>
-            </div>
-            <div class="project-card__content">
-              <h3 class="project-card__title">Pantry Tracker</h3>
-              <p class="project-card__desc">A full-stack pantry management app using Firebase for data persistence and Next.js for the frontend, deployed on Vercel.</p>
-              <div class="project-card__tags">
-                <span class="tag">Next.js</span>
-                <span class="tag">React</span>
-                <span class="tag">Firebase</span>
-              </div>
-            </div>
-          </article>
-
-        </div>
-
-        <div style="text-align: center; margin-top: var(--space-2xl);" class="reveal">
-          <a href="https://github.com/Jadenw9013" class="btn btn--secondary" target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-github"></i> View All on GitHub
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== Skills ===== -->
-    <section id="skills" class="section section--alt">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-label">Tech Stack</span>
-        <h2 class="section-title">Skills &amp; Tools</h2>
-      </div>
-      <div class="skills-grid reveal-stagger">
-
-        <div class="skills-group reveal">
-          <div class="skills-group__icon"><i class="bi bi-code-slash"></i></div>
-          <h3 class="skills-group__title">Languages</h3>
-          <div class="skills-group__list">
-            <span class="skill-tag">Python</span>
-            <span class="skill-tag">Java</span>
-            <span class="skill-tag">C#</span>
-            <span class="skill-tag">C++</span>
-            <span class="skill-tag">TypeScript</span>
-            <span class="skill-tag">JavaScript</span>
-          </div>
-        </div>
-
-        <div class="skills-group reveal">
-          <div class="skills-group__icon"><i class="bi bi-layers"></i></div>
-          <h3 class="skills-group__title">Frameworks &amp; Libraries</h3>
-          <div class="skills-group__list">
-            <span class="skill-tag">React</span>
-            <span class="skill-tag">Next.js</span>
-            <span class="skill-tag">.NET</span>
-            <span class="skill-tag">Firebase</span>
-            <span class="skill-tag">Flutter</span>
-          </div>
-        </div>
-
-        <div class="skills-group reveal">
-          <div class="skills-group__icon"><i class="bi bi-tools"></i></div>
-          <h3 class="skills-group__title">Tools &amp; Platforms</h3>
-          <div class="skills-group__list">
-            <span class="skill-tag">Azure</span>
-            <span class="skill-tag">AWS</span>
-            <span class="skill-tag">Git &amp; GitHub</span>
-            <span class="skill-tag">Docker</span>
-            <span class="skill-tag">REST APIs</span>
-          </div>
-        </div>
-
+      <div>
+        <h3 class="exp-role">Software Engineering Intern</h3>
+        <ul class="exp-bullets">
+          <li>Reduced manual follow-ups by 70% building a secure analytics dashboard using C#, LINQ, and role-based access controls.</li>
+          <li>Built and maintained backend and frontend systems across distributed services, improving data visibility and operational oversight.</li>
+          <li>Optimized C# and LINQ queries to support high-volume data operations as usage scaled.</li>
+        </ul>
       </div>
     </div>
-  </section>
 
-
-    <!-- ===== Experience ===== -->
-    <section id="experience" class="section">
-      <div class="container container--narrow">
-        <div class="section-header reveal">
-          <span class="section-label">Background</span>
-          <h2 class="section-title">Experience &amp; Education</h2>
-        </div>
-
-        <!-- Experience -->
-        <h3 class="exp-heading reveal">Experience</h3>
-        <div class="exp-list" style="margin-bottom: var(--space-3xl);">
-
-          <div class="exp-card reveal">
-            <div class="exp-card__header">
-              <div>
-                <h4 class="exp-card__role">Software Engineer Intern</h4>
-                <p class="exp-card__company">Street Grace</p>
-              </div>
-              <span class="exp-card__date">Dec 2024 &ndash; Present</span>
-            </div>
-            <p class="exp-card__desc">At Street Grace, a national nonprofit working to end the commercial sexual exploitation of children, I contribute as a Software Engineering Intern on secure, scalable software systems that support data-driven prevention and protection efforts. I work across the stack to build reliable tools, optimize performance, and translate real-world needs into impactful technical solutions.</p>
-          </div>
-
-          <div class="exp-card reveal">
-            <div class="exp-card__header">
-              <div>
-                <h4 class="exp-card__role">Software Engineering Fellow</h4>
-                <p class="exp-card__company">Headstarter</p>
-              </div>
-              <span class="exp-card__date">Jun 2024 &ndash; Sep 2024</span>
-            </div>
-            <p class="exp-card__desc">Engaged in a 7-week software engineering fellowship involving 5 AI projects, weekend hackathons, and a final project. Gained mentorship from experienced engineers through coaching calls and team evaluations, and participated in events to enhance coding skills and problem-solving abilities.</p>
-          </div>
-
-          <div class="exp-card reveal">
-            <div class="exp-card__header">
-              <div>
-                <h4 class="exp-card__role">Cyber Security Global Job Simulation</h4>
-                <p class="exp-card__company">Clifford Chance</p>
-              </div>
-              <span class="exp-card__date">Jun 2020 &ndash; Aug 2022</span>
-            </div>
-            <p class="exp-card__desc">Provided legal support for cyber breach issues, including advising on ICO Dawn Raids, GDPR compliance for data breaches, and defensive strategies for data center operations. Assisted clients with stakeholder notifications and breach response.</p>
-          </div>
-
-          <div class="exp-card reveal">
-            <div class="exp-card__header">
-              <div>
-                <h4 class="exp-card__role">Pre-Apprenticeship Program</h4>
-                <p class="exp-card__company">Computing For All (CFA)</p>
-              </div>
-              <span class="exp-card__date">Mar 2022 &ndash; May 2023</span>
-            </div>
-            <p class="exp-card__desc">Completed the program with a grade of A+, developing skills in Python, CSS, and HTML. The program emphasized project development, teamwork, and presentation skills.</p>
-          </div>
-
-        </div>
-
-        <!-- Education -->
-        <h3 class="exp-heading reveal">Education</h3>
-        <div class="edu-grid">
-
-          <div class="edu-card reveal">
-            <h4 class="edu-card__degree">B.S. Computer Science</h4>
-            <p class="edu-card__school">Seattle University</p>
-            <p class="edu-card__date">Present &middot; Seattle, WA</p>
-            <p class="edu-card__desc">Senior pursuing a degree in Computer Science with a business specialization. Planning to pursue a master's in ML/AI.</p>
-          </div>
-
-          <div class="edu-card reveal">
-            <h4 class="edu-card__degree">High School Diploma (Running Start)</h4>
-            <p class="edu-card__school">Bellevue College / Interlake High School</p>
-            <p class="edu-card__date">2020 &ndash; 2023 &middot; Bellevue, WA</p>
-            <p class="edu-card__desc">Active in athletics with participation in basketball and track. Member of the Honor Society from 2020 to 2023.</p>
-          </div>
-        </div>
-
-        <div style="text-align: center; margin-top: var(--space-2xl);" class="reveal">
-          <a href="https://docs.google.com/document/d/1eOeCMDTQNx7UPudLn9bDFEuxkNFLgbjVByNYgDOos68/edit?usp=sharing" class="resume-link" target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-download"></i> Download Full Resume
-          </a>
-        </div>
+    <div class="exp-item reveal" style="transition-delay:0.1s">
+      <div class="exp-meta">
+        <p class="exp-date">2025 – Present</p>
+        <p class="exp-company">RevereXR</p>
       </div>
-    </section>
-
-    <!-- ===== Contact CTA ===== -->
-    <section id="contact" class="cta-section">
-      <div class="container">
-        <div class="reveal">
-          <h2 class="cta-section__title">Let's build something together</h2>
-          <p class="cta-section__desc">I'm always interested in new opportunities, collaborations, and interesting projects. Let's connect.</p>
-          <a href="contact.html" class="btn btn--primary btn--lg">Get in Touch</a>
-          <div class="cta-section__social">
-            <a href="https://github.com/Jadenw9013" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="bi bi-github"></i></a>
-            <a href="https://www.linkedin.com/in/jadenawong/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-            <a href="https://www.instagram.com/jaden.w0ng/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ===== Footer ===== -->
-  <footer class="footer">
-    <div class="container footer__inner">
-      <span class="footer__copy">&copy; 2025 Jaden Wong</span>
-      <div class="footer__links">
-        <a href="https://github.com/Jadenw9013" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://www.linkedin.com/in/jadenawong/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="contact.html">Contact</a>
+      <div>
+        <h3 class="exp-role">AR Software Engineering Collaborator</h3>
+        <ul class="exp-bullets">
+          <li>Building a mobile AR application using Unity (C#) and Flutter for interactive 3D experiences tied to real-world murals.</li>
+          <li>Designing geolocation-based activation and real-time synchronization logic for concurrent users.</li>
+          <li>Partnering directly with the CEO to scope features and align system architecture with product requirements.</li>
+        </ul>
       </div>
     </div>
-  </footer>
 
-  <!-- Back to top -->
-  <button class="back-to-top" aria-label="Back to top">
-    <i class="bi bi-chevron-up"></i>
-  </button>
+    <div class="exp-item reveal" style="transition-delay:0.2s">
+      <div class="exp-meta">
+        <p class="exp-date">Jul – Sep 2024</p>
+        <p class="exp-company">Headstarter AI</p>
+      </div>
+      <div>
+        <h3 class="exp-role">Software Engineering Fellow</h3>
+        <ul class="exp-bullets">
+          <li>Led a team of 4 to build a final project that acquired 1,000+ users — placed Top 8 of 18,000 SWE fellows.</li>
+          <li>Owned end-to-end feature development across frontend and backend, focusing on performance and UX.</li>
+          <li>Presented to Nabeel, CEO of Lunchbox, due to top ranking in the cohort.</li>
+        </ul>
+      </div>
+    </div>
 
-  <!-- Scripts -->
-  <script src="js/scripts.js"></script>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-header">
+    <h2 class="section-title reveal">Selected Work</h2>
+    <span class="reveal" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);transition-delay:0.1s">06 Projects</span>
+  </div>
+  <div class="projects-grid">
+
+    <div class="card" data-delay="0">
+      <div class="card-inner">
+        <p class="card-index">001</p>
+        <div class="card-tags"><span class="card-tag">SaaS</span><span class="card-tag">Full-Stack</span></div>
+        <h3 class="card-title">Steadfast Coaching Platform</h3>
+        <p class="card-desc">Production-ready multi-tenant SaaS for coaches and clients. Relational schema, secure RESTful APIs, role-based dashboards, and structured check-ins supporting 30+ concurrent clients.</p>
+        <div class="card-stack">
+          <span class="stack-pill">Next.js</span>
+          <span class="stack-pill">TypeScript</span>
+          <span class="stack-pill">Prisma</span>
+          <span class="stack-pill">PostgreSQL</span>
+          <span class="stack-pill">Clerk</span>
+        </div>
+      </div>
+      <a href="https://online-coaching-one.vercel.app/" target="_blank" class="card-link">↗</a>
+    </div>
+
+    <div class="card" data-delay="80">
+      <div class="card-inner">
+        <p class="card-index">002</p>
+        <div class="card-tags"><span class="card-tag">AI</span><span class="card-tag">Browser Ext</span></div>
+        <h3 class="card-title">Clairity — Prompt Optimizer</h3>
+        <p class="card-desc">Browser extension that analyzes and rewrites prompts across AI platforms. Adapter-based system supporting ChatGPT, Claude, and Gemini with structured JSON response schemas.</p>
+        <div class="card-stack">
+          <span class="stack-pill">TypeScript</span>
+          <span class="stack-pill">Chrome MV3</span>
+          <span class="stack-pill">Node.js</span>
+        </div>
+      </div>
+      <a href="https://github.com/Jadenw9013" target="_blank" class="card-link">↗</a>
+    </div>
+
+    <div class="card" data-delay="160">
+      <div class="card-inner">
+        <p class="card-index">003</p>
+        <div class="card-tags"><span class="card-tag">AI</span><span class="card-tag">Next.js</span></div>
+        <h3 class="card-title">AI Notes</h3>
+        <p class="card-desc">AI-powered note-taking app where users type or upload PDFs. AI enhances, expands, and refines content in real time using OpenAI's API.</p>
+        <div class="card-stack">
+          <span class="stack-pill">Next.js</span>
+          <span class="stack-pill">React</span>
+          <span class="stack-pill">OpenAI</span>
+        </div>
+      </div>
+      <a href="https://github.com/Jadenw9013" target="_blank" class="card-link">↗</a>
+    </div>
+
+    <div class="card" data-delay="60">
+      <div class="card-inner">
+        <p class="card-index">004</p>
+        <div class="card-tags"><span class="card-tag">AI</span><span class="card-tag">Fitness</span></div>
+        <h3 class="card-title">AI Macro Maker</h3>
+        <p class="card-desc">Personalized meal planner using OpenAI. Collects user stats and generates a full meal plan with macro breakdowns and nutritional context.</p>
+        <div class="card-stack">
+          <span class="stack-pill">Next.js</span>
+          <span class="stack-pill">TypeScript</span>
+          <span class="stack-pill">OpenAI</span>
+        </div>
+      </div>
+      <a href="https://github.com/Jadenw9013" target="_blank" class="card-link">↗</a>
+    </div>
+
+    <div class="card" data-delay="140">
+      <div class="card-inner">
+        <p class="card-index">005</p>
+        <div class="card-tags"><span class="card-tag">AI</span><span class="card-tag">Auth</span></div>
+        <h3 class="card-title">AI Flashcard Generator</h3>
+        <p class="card-desc">Generate study flashcards from any topic using OpenAI. User authentication via Clerk and data persistence through Firebase.</p>
+        <div class="card-stack">
+          <span class="stack-pill">Next.js</span>
+          <span class="stack-pill">OpenAI</span>
+          <span class="stack-pill">Firebase</span>
+          <span class="stack-pill">Clerk</span>
+        </div>
+      </div>
+      <a href="https://github.com/Jadenw9013" target="_blank" class="card-link">↗</a>
+    </div>
+
+    <div class="card" data-delay="220">
+      <div class="card-inner">
+        <p class="card-index">006</p>
+        <div class="card-tags"><span class="card-tag">Chatbot</span><span class="card-tag">Gemini</span></div>
+        <h3 class="card-title">AI Resume Assistant</h3>
+        <p class="card-desc">AI chatbot answering questions about my resume using Google Gemini. Conversational access to experience, skills, and projects.</p>
+        <div class="card-stack">
+          <span class="stack-pill">React</span>
+          <span class="stack-pill">Node.js</span>
+          <span class="stack-pill">Gemini API</span>
+        </div>
+      </div>
+      <a href="https://github.com/Jadenw9013" target="_blank" class="card-link">↗</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="exp-header">
+    <h2 class="section-title reveal">Stack</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-group reveal">
+      <p class="skill-group-title">Languages</p>
+      <div class="skill-items">
+        <div class="skill-item">TypeScript</div>
+        <div class="skill-item">JavaScript</div>
+        <div class="skill-item">Python</div>
+        <div class="skill-item">C#</div>
+        <div class="skill-item">Java</div>
+        <div class="skill-item">C++</div>
+      </div>
+    </div>
+    <div class="skill-group reveal" style="transition-delay:0.08s">
+      <p class="skill-group-title">Frameworks</p>
+      <div class="skill-items">
+        <div class="skill-item">Next.js</div>
+        <div class="skill-item">React</div>
+        <div class="skill-item">Flutter</div>
+        <div class="skill-item">Node.js</div>
+        <div class="skill-item">.NET / C#</div>
+        <div class="skill-item">Unity</div>
+      </div>
+    </div>
+    <div class="skill-group reveal" style="transition-delay:0.16s">
+      <p class="skill-group-title">Cloud & Data</p>
+      <div class="skill-items">
+        <div class="skill-item">AWS</div>
+        <div class="skill-item">Azure</div>
+        <div class="skill-item">Firebase</div>
+        <div class="skill-item">PostgreSQL</div>
+        <div class="skill-item">Prisma</div>
+        <div class="skill-item">Supabase</div>
+      </div>
+    </div>
+    <div class="skill-group reveal" style="transition-delay:0.24s">
+      <p class="skill-group-title">AI & Tools</p>
+      <div class="skill-items">
+        <div class="skill-item">OpenAI API</div>
+        <div class="skill-item">Google Gemini</div>
+        <div class="skill-item">Docker</div>
+        <div class="skill-item">Git & GitHub</div>
+        <div class="skill-item">REST APIs</div>
+        <div class="skill-item">Clerk</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="contact-eyebrow reveal">Let's build something</p>
+  <h2 class="contact-title reveal" style="transition-delay:0.1s">Got a project<br><em>in mind?</em></h2>
+  <p class="contact-sub reveal" style="transition-delay:0.2s">I'm always open to new opportunities, collaborations, and interesting problems.</p>
+  <div class="contact-actions reveal" style="transition-delay:0.3s">
+    <a href="mailto:wong.jaden@icloud.com" class="btn btn-primary">wong.jaden@icloud.com →</a>
+    <a href="https://www.linkedin.com/in/jadenawong/" target="_blank" class="btn btn-ghost">LinkedIn ↗</a>
+  </div>
+  <div class="contact-links reveal" style="transition-delay:0.4s">
+    <a href="https://github.com/Jadenw9013" target="_blank" class="contact-link">⟵ GitHub</a>
+    <a href="tel:+14253629948" class="contact-link">(425) 362-9948</a>
+    <a href="https://jaden-wong.com" target="_blank" class="contact-link">jaden-wong.com ⟶</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Jaden Wong</span>
+  <span>CS Senior · Seattle University</span>
+</footer>
+
+<script>
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx+'px'; cursor.style.top = my+'px';
+});
+
+const interactives = document.querySelectorAll('a,button,.card');
+interactives.forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    document.body.classList.add('cursor-expanded','cursor-link');
+  });
+  el.addEventListener('mouseleave', () => {
+    document.body.classList.remove('cursor-expanded','cursor-link');
+  });
+});
+
+(function animRing() {
+  rx += (mx-rx)*0.1; ry += (my-ry)*0.1;
+  ring.style.left = rx+'px'; ring.style.top = ry+'px';
+  requestAnimationFrame(animRing);
+})();
+
+// ── PARTICLES ──
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+const mouse = {x:-9999,y:-9999};
+
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+document.addEventListener('mousemove', e => { mouse.x=e.clientX; mouse.y=e.clientY+window.scrollY; });
+
+class P {
+  constructor() { this.init(); }
+  init() {
+    this.x = this.bx = Math.random()*W;
+    this.y = this.by = Math.random()*H;
+    this.r = Math.random()*1.2+0.3;
+    this.vx = (Math.random()-.5)*0.25;
+    this.vy = (Math.random()-.5)*0.25;
+    this.o = Math.random()*0.35+0.08;
+  }
+  tick() {
+    const scrollY = window.scrollY;
+    const dx = mouse.x - this.x;
+    const dy = (mouse.y-scrollY) - this.y;
+    const d = Math.hypot(dx,dy);
+    if (d<100) { const f=(100-d)/100; this.x-=(dx/d)*f*3; this.y-=(dy/d)*f*3; }
+    else { this.x+=(this.bx-this.x)*0.05; this.y+=(this.by-this.y)*0.05; }
+    this.bx+=this.vx; this.by+=this.vy;
+    if(this.bx<0||this.bx>W) this.vx*=-1;
+    if(this.by<0||this.by>H) this.vy*=-1;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(232,200,122,${this.o})`;
+    ctx.fill();
+  }
+}
+
+const particles = Array.from({length:100},()=>new P());
+
+function drawEdges() {
+  for(let i=0;i<particles.length;i++) {
+    for(let j=i+1;j<particles.length;j++) {
+      const dx=particles[i].x-particles[j].x;
+      const dy=particles[i].y-particles[j].y;
+      const d=Math.hypot(dx,dy);
+      if(d<90) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.strokeStyle=`rgba(232,200,122,${0.07*(1-d/90)})`;
+        ctx.lineWidth=0.6;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+(function loop() {
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{p.tick();p.draw();});
+  drawEdges();
+  requestAnimationFrame(loop);
+})();
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
+});
+
+// ── SCROLL REVEALS ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      const el = e.target;
+      const d = el.dataset.delay ? parseInt(el.dataset.delay) : 0;
+      setTimeout(()=>el.classList.add('visible'),d);
+    }
+  });
+},{threshold:0.1});
+
+document.querySelectorAll('.reveal,.card').forEach(el=>obs.observe(el));
+
+// ── CARD 3D TILT ──
+document.querySelectorAll('.card').forEach(card=>{
+  const inner = card.querySelector('.card-inner');
+  card.addEventListener('mousemove',e=>{
+    const r = card.getBoundingClientRect();
+    const rx = ((e.clientY-r.top)/r.height-.5)*-10;
+    const ry = ((e.clientX-r.left)/r.width-.5)*10;
+    inner.style.transform=`perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    inner.style.transform='perspective(700px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+  });
+});
+</script>
 </body>
 </html>
