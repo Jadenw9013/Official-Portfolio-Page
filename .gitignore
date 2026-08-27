@@ -1,1 +1,8 @@
-node_modules
+node_modules/
+.DS_Store
+
+# Next.js scaffold — this is a static site, these must never be committed
+/.next/
+/next-env.d.ts
+/src/
+/public/
