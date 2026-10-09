@@ -17,6 +17,9 @@
 .sculpture-art canvas{opacity:0;transition:opacity .7s}.sculpture-art.is-ready canvas{opacity:1}.sculpture-art.is-ready .sculpture-fallback{opacity:0}.sculpture-fallback{transition:opacity .7s}
 .sculpture-art.is-ready canvas{pointer-events:auto;cursor:grab;touch-action:pan-y pinch-zoom;user-select:none;-webkit-user-select:none}
 .sculpture-art.is-dragging canvas{cursor:grabbing}
+.sculpture-hint{position:absolute;bottom:4%;left:0;right:0;text-align:center;font:11px Geist,Arial,sans-serif;color:var(--muted);opacity:0;transition:opacity .25s;pointer-events:none}
+.sculpture-art.is-ready .sculpture-hint{opacity:.8}
+.sculpture-art.is-dragging .sculpture-hint{opacity:.3}
 .sculpture-art canvas:focus-visible{outline:1px solid var(--accent);outline-offset:-12px;border-radius:12px}
 .sculpture-bottom{position:absolute;bottom:30px;left:0;right:0;display:flex;justify-content:space-between;align-items:center;font-family:Geist,Arial,sans-serif;font-size:12px;border-top:1px solid var(--border);padding-top:20px;z-index:3}.sculpture-bottom a{text-decoration:none;color:var(--muted)}.sculpture-bottom a:hover{color:var(--ink)}.sculpture-scroll{display:flex;align-items:center;gap:14px}.scroll-stroke{width:1px;height:25px;background:linear-gradient(var(--accent),transparent);transform-origin:top}
 .no-js #hero{height:100svh}.no-js .hero-sticky{position:relative}
