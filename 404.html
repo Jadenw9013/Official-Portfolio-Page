@@ -53,6 +53,9 @@ p{color:var(--muted);margin-top:var(--sp-4);max-width:46ch;}
 .btn-primary:hover{background:#f0d890;}
 .btn-ghost{border:1px solid var(--border-ui);color:var(--muted);}
 .btn-ghost:hover{border-color:var(--ink);color:var(--ink);}
+.icon-arrow-right{position:relative;display:inline-block;flex:0 0 auto;width:.9em;height:.9em;}
+.icon-arrow-right::before{content:'';position:absolute;left:0;right:1px;top:50%;height:1px;background:currentColor;transform:translateY(-50%);}
+.icon-arrow-right::after{content:'';position:absolute;right:1px;top:50%;width:.42em;height:.42em;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:translateY(-50%) rotate(45deg);}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;}}
 </style>
 </head>
@@ -62,7 +65,7 @@ p{color:var(--muted);margin-top:var(--sp-4);max-width:46ch;}
   <h1>Nothing <em>here.</em></h1>
   <p>This page moved or never existed. The portfolio now lives on a single page — projects, experience, and contact are all there.</p>
   <div class="actions">
-    <a href="/" class="btn btn-primary">Back home →</a>
+    <a href="/" class="btn btn-primary">Back home <span class="icon-arrow-right" aria-hidden="true"></span></a>
     <a href="/#projects" class="btn btn-ghost">See the work</a>
   </div>
 </main>

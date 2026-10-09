@@ -179,6 +179,20 @@ nav.scrolled{border-color:var(--border);background:rgba(10,10,10,.96);}
 .btn-primary:hover{background:#f0d890;}
 .btn-ghost{border:1px solid var(--border-ui);color:var(--muted);}
 .btn-ghost:hover{border-color:var(--ink);color:var(--ink);}
+.icon-arrow-right,.icon-arrow-up-right{
+  position:relative;display:inline-block;flex:0 0 auto;
+  width:.9em;height:.9em;color:currentColor;
+}
+.icon-arrow-right::before,.icon-arrow-up-right::before{
+  content:'';position:absolute;left:0;right:1px;top:50%;height:1px;
+  background:currentColor;transform:translateY(-50%);
+}
+.icon-arrow-right::after,.icon-arrow-up-right::after{
+  content:'';position:absolute;right:1px;top:50%;width:.42em;height:.42em;
+  border-top:1px solid currentColor;border-right:1px solid currentColor;
+  transform:translateY(-50%) rotate(45deg);
+}
+.icon-arrow-up-right{transform:rotate(-45deg);}
 .hero-stats{display:flex;flex-wrap:wrap;gap:var(--sp-7);margin-top:var(--sp-8);}
 .stat-num{font-family:var(--serif);font-weight:400;font-size:var(--t-4);font-style:italic;color:var(--ink);line-height:1;}
 .stat-label{font-size:var(--t--1);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--muted);margin-top:var(--sp-1);}
@@ -362,12 +376,12 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
     <div class="shell sculpture-layout">
       <div class="sculpture-copy">
         <p class="sculpture-location"><span aria-hidden="true"></span> Software engineer · Seattle area</p>
-        <h1 class="sculpture-name">Jaden<br>Wong.</h1>
-        <p class="sculpture-promise">I build software<br>you can put to work.</p>
-        <p class="sculpture-bio">AI systems, spatial experiences,<br>and full-stack products.</p>
+        <h1 class="sculpture-name">Jaden<br> Wong.</h1>
+        <p class="sculpture-promise">I build software<br> you can put to work.</p>
+        <p class="sculpture-bio">AI systems, spatial experiences,<br> and full-stack products.</p>
         <div class="sculpture-actions">
-          <a href="#projects" class="sculpture-primary">Explore my work <span aria-hidden="true">↗</span></a>
-          <a href="https://docs.google.com/document/d/1eOeCMDTQNx7UPudLn9bDFEuxkNFLgbjVByNYgDOos68" target="_blank" rel="noopener noreferrer" class="sculpture-resume">Résumé <span aria-hidden="true">↗</span></a>
+          <a href="#projects" class="sculpture-primary">Explore my work <span class="icon-arrow-up-right" aria-hidden="true"></span></a>
+          <a href="https://docs.google.com/document/d/1eOeCMDTQNx7UPudLn9bDFEuxkNFLgbjVByNYgDOos68" target="_blank" rel="noopener noreferrer" class="sculpture-resume">Résumé <span class="icon-arrow-up-right" aria-hidden="true"></span></a>
         </div>
         <div class="sculpture-credentials">
           <p><span>Previously</span> Boeing <span>Jun–Sep 2026</span></p>
@@ -380,7 +394,7 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
       </div>
       <div class="sculpture-bottom">
         <a href="#about" class="sculpture-scroll"><span class="scroll-stroke" aria-hidden="true"></span> Scroll to explore</a>
-        <a href="https://github.com/Jadenw9013" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a href="https://github.com/Jadenw9013" target="_blank" rel="noopener noreferrer">GitHub <span class="icon-arrow-up-right" aria-hidden="true"></span></a>
       </div>
     </div>
   </div>
@@ -475,7 +489,7 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
         <p class="card-desc">Backend that turns source documents into cited, verifiable claims, confining the LLM to extraction only so that confidence scoring, validation, and publication rules stay in deterministic Python. Execution layer spans mission and task state machines, a Postgres-backed queue with lease-based concurrency, and bounded exponential-backoff retries.</p>
         <p class="card-metric">114 tests · offline eval harness</p>
         <div class="card-stack"><span class="stack-pill">Python</span><span class="stack-pill">FastAPI</span><span class="stack-pill">PostgreSQL</span><span class="stack-pill">SQLAlchemy</span><span class="stack-pill">Alembic</span></div>
-        <a href="https://github.com/Jadenw9013/atlas" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Atlas on GitHub (opens in a new tab)">↗</a>
+        <a href="https://github.com/Jadenw9013/atlas" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Atlas on GitHub (opens in a new tab)"><span class="icon-arrow-up-right" aria-hidden="true"></span></a>
       </article>
       <article class="card card--featured" data-delay="80">
         <p class="card-index">002</p>
@@ -492,7 +506,7 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
         <p class="card-desc">Founded and deployed a production multi-tenant SaaS. Full Prisma/PostgreSQL schema, strict server-side authorization, secure upload pipelines, and a companion iOS app in Swift.</p>
         <p class="card-metric">45+ users · 2 coaches</p>
         <div class="card-stack"><span class="stack-pill">Next.js</span><span class="stack-pill">TypeScript</span><span class="stack-pill">Prisma</span><span class="stack-pill">PostgreSQL</span><span class="stack-pill">Swift</span></div>
-        <a href="https://steadfast-coaching.com/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Steadfast Coaching Platform, live site (opens in a new tab)">↗</a>
+        <a href="https://steadfast-coaching.com/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Steadfast Coaching Platform, live site (opens in a new tab)"><span class="icon-arrow-up-right" aria-hidden="true"></span></a>
       </article>
       <article class="card card--featured" data-delay="80">
         <p class="card-index">004</p>
@@ -501,7 +515,7 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
         <p class="card-desc">Chrome extension that analyzes and rewrites prompts across ChatGPT, Claude, Gemini, and Copilot, with a secure backend API using structured validation, rate limiting, and deterministic JSON schemas.</p>
         <p class="card-metric">Adopted by 10+ Microsoft engineers</p>
         <div class="card-stack"><span class="stack-pill">TypeScript</span><span class="stack-pill">Chrome MV3</span><span class="stack-pill">Node.js</span></div>
-        <a href="https://github.com/Jadenw9013/Clairity" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Clairity on GitHub (opens in a new tab)">↗</a>
+        <a href="https://github.com/Jadenw9013/Clairity" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Clairity on GitHub (opens in a new tab)"><span class="icon-arrow-up-right" aria-hidden="true"></span></a>
       </article>
     </div>
 
@@ -514,7 +528,7 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
         <h3 class="card-title">AI Notes</h3>
         <p class="card-desc">AI-powered note-taking app where users type or upload PDFs. AI enhances, expands, and refines content in real time using OpenAI's API.</p>
         <div class="card-stack"><span class="stack-pill">Next.js</span><span class="stack-pill">React</span><span class="stack-pill">OpenAI</span></div>
-        <a href="https://ai-notes-ashy.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="AI Notes, live demo (opens in a new tab)">↗</a>
+        <a href="https://ai-notes-ashy.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="AI Notes, live demo (opens in a new tab)"><span class="icon-arrow-up-right" aria-hidden="true"></span></a>
       </article>
       <article class="card" data-delay="80">
         <p class="card-index">006</p>
@@ -522,7 +536,7 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
         <h3 class="card-title">AI Macro Maker</h3>
         <p class="card-desc">Personalized meal planner using OpenAI. Collects user stats and generates a full meal plan with macro breakdowns and nutritional context.</p>
         <div class="card-stack"><span class="stack-pill">Next.js</span><span class="stack-pill">TypeScript</span><span class="stack-pill">OpenAI</span></div>
-        <a href="https://meal-planner-two-tan.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="AI Macro Maker, live demo (opens in a new tab)">↗</a>
+        <a href="https://meal-planner-two-tan.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="AI Macro Maker, live demo (opens in a new tab)"><span class="icon-arrow-up-right" aria-hidden="true"></span></a>
       </article>
       <article class="card" data-delay="160">
         <p class="card-index">007</p>
@@ -530,7 +544,7 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
         <h3 class="card-title">AI Flashcard Generator</h3>
         <p class="card-desc">Generate study flashcards from any topic using OpenAI. User authentication via Clerk and data persistence through Firebase.</p>
         <div class="card-stack"><span class="stack-pill">Next.js</span><span class="stack-pill">OpenAI</span><span class="stack-pill">Firebase</span><span class="stack-pill">Clerk</span></div>
-        <a href="https://ai-flashcards-drab.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="AI Flashcard Generator, live demo (opens in a new tab)">↗</a>
+        <a href="https://ai-flashcards-drab.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="AI Flashcard Generator, live demo (opens in a new tab)"><span class="icon-arrow-up-right" aria-hidden="true"></span></a>
       </article>
       <article class="card" data-delay="0">
         <p class="card-index">008</p>
@@ -538,7 +552,7 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
         <h3 class="card-title">AI Resume Assistant</h3>
         <p class="card-desc">AI chatbot answering questions about my resume using Google Gemini. Conversational access to experience, skills, and projects.</p>
         <div class="card-stack"><span class="stack-pill">React</span><span class="stack-pill">Node.js</span><span class="stack-pill">Gemini API</span></div>
-        <a href="https://ai-assistant-azure.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="AI Resume Assistant, live demo (opens in a new tab)">↗</a>
+        <a href="https://ai-assistant-azure.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="AI Resume Assistant, live demo (opens in a new tab)"><span class="icon-arrow-up-right" aria-hidden="true"></span></a>
       </article>
       <article class="card" data-delay="80">
         <p class="card-index">009</p>
@@ -546,7 +560,7 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
         <h3 class="card-title">AI Weather App</h3>
         <p class="card-desc">Weather app pairing OpenAI with the OpenWeather API to display current conditions and suggest activities based on the forecast.</p>
         <div class="card-stack"><span class="stack-pill">Next.js</span><span class="stack-pill">TypeScript</span><span class="stack-pill">OpenAI</span><span class="stack-pill">OpenWeather</span></div>
-        <a href="https://updated-ai-weather-app.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="AI Weather App, live demo (opens in a new tab)">↗</a>
+        <a href="https://updated-ai-weather-app.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="AI Weather App, live demo (opens in a new tab)"><span class="icon-arrow-up-right" aria-hidden="true"></span></a>
       </article>
       <article class="card" data-delay="160">
         <p class="card-index">010</p>
@@ -554,7 +568,7 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
         <h3 class="card-title">Pantry Tracker</h3>
         <p class="card-desc">Full-stack pantry management app using Firebase for data persistence and Next.js on the frontend, deployed on Vercel.</p>
         <div class="card-stack"><span class="stack-pill">Next.js</span><span class="stack-pill">React</span><span class="stack-pill">Firebase</span></div>
-        <a href="https://project2-rho-six.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Pantry Tracker, live demo (opens in a new tab)">↗</a>
+        <a href="https://project2-rho-six.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Pantry Tracker, live demo (opens in a new tab)"><span class="icon-arrow-up-right" aria-hidden="true"></span></a>
       </article>
       <article class="card" data-delay="0">
         <p class="card-index">011</p>
@@ -562,7 +576,7 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
         <h3 class="card-title">Peferd Motion — AI Exercise Coach</h3>
         <p class="card-desc">Real-time AI exercise coaching system with full-body pose detection, 5 adaptive workout levels, intelligent rep counting with safety gating, and form quality monitoring. Optional Claude-powered feedback. Works offline in mock mode.</p>
         <div class="card-stack"><span class="stack-pill">TypeScript</span><span class="stack-pill">Vite</span><span class="stack-pill">Anthropic API</span></div>
-        <a href="https://peferd.vercel.app" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Peferd Motion, live demo (opens in a new tab)">↗</a>
+        <a href="https://peferd.vercel.app" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Peferd Motion, live demo (opens in a new tab)"><span class="icon-arrow-up-right" aria-hidden="true"></span></a>
       </article>
     </div>
   </div>
@@ -602,11 +616,11 @@ footer .shell{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(
     <h2 class="contact-title reveal" data-delay="80">Got a project <em>in mind?</em></h2>
     <p class="contact-sub reveal" data-delay="120">I'm always open to new opportunities, collaborations, and interesting problems.</p>
     <div class="contact-actions reveal" data-delay="160">
-      <a href="mailto:wong.jaden@icloud.com" class="btn btn-primary">Say Hello →</a>
-      <a href="https://www.linkedin.com/in/jadenawong/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">LinkedIn ↗</a>
+      <a href="mailto:wong.jaden@icloud.com" class="btn btn-primary">Say Hello <span class="icon-arrow-right" aria-hidden="true"></span></a>
+      <a href="https://www.linkedin.com/in/jadenawong/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">LinkedIn <span class="icon-arrow-up-right" aria-hidden="true"></span></a>
     </div>
     <div class="contact-links reveal" data-delay="200">
-      <a href="https://github.com/Jadenw9013" target="_blank" rel="noopener noreferrer" class="contact-link">GitHub ↗</a>
+      <a href="https://github.com/Jadenw9013" target="_blank" rel="noopener noreferrer" class="contact-link">GitHub <span class="icon-arrow-up-right" aria-hidden="true"></span></a>
       <a href="mailto:wong.jaden@icloud.com" class="contact-link">wong.jaden@icloud.com</a>
     </div>
   </div>
