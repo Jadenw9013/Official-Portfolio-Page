@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Portfolio compatibility checks</title>
+<style>body{margin:0;background:#191919;color:#eee;font:14px system-ui}nav{padding:12px;display:flex;gap:20px;flex-wrap:wrap}a{color:#b8cefa}iframe{display:block;width:100%;height:calc(100vh - 80px);border:0}p{margin:0;padding:0 12px 8px;font-size:12px;color:#aaa}</style></head>
+<body><nav><strong>Local test harness</strong><a href="?case=no-webgl">WebGL unavailable</a><a href="?case=reduced">Reduced motion (JS)</a><a href="?case=no-js">JavaScript disabled</a></nav><p id="case-label"></p><iframe title="Portfolio under compatibility test" id="subject"></iframe>
+<script type="module">
+const mode = new URL(location.href).searchParams.get('case') || 'no-webgl';
+document.getElementById('case-label').textContent = `Simulated case: ${mode}. This harness does not change browser preferences or the production page.`;
+let page = await (await fetch('../index.html')).text();
+const base = `<base href="${new URL('../', location.href).href}">`;
+let setup = '';
+if (mode === 'no-webgl') setup = `const originalContext = HTMLCanvasElement.prototype.getContext; HTMLCanvasElement.prototype.getContext = function(type,...args) { return type.includes('webgl') ? null : originalContext.call(this,type,...args); };`;
+if (mode === 'reduced') setup = `const originalMatch = window.matchMedia.bind(window); window.matchMedia = query => query.includes('prefers-reduced-motion') ? {media:query,matches:true,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}} : originalMatch(query);`;
+if (mode === 'no-js') page = page.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '').replace(/<noscript>/gi,'<div>').replace(/<\/noscript>/gi,'</div>');
+page = page.replace('<head>', '<head>'+base+(setup?'<script>'+setup+'<\/script>':''));
+document.getElementById('subject').srcdoc = page;
+</script></body></html>

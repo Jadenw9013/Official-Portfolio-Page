@@ -1,0 +1,28 @@
+/* The artwork is purely decorative. Scrolling remains native. */
+#hero{display:block;position:relative;min-height:0;height:160svh;padding:0;overflow:visible}
+.hero-sticky{position:sticky;top:0;height:100svh;min-height:720px;overflow:clip}
+#hero .sculpture-layout{height:100%;max-width:1360px;position:relative;display:grid;grid-template-columns:.85fr 1.15fr;align-items:center;padding-top:70px;padding-bottom:90px}
+.sculpture-copy{position:relative;z-index:2;font-family:Geist,Arial,sans-serif;pointer-events:none}
+.sculpture-copy a{pointer-events:auto}
+.sculpture-location{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);margin-bottom:35px}
+.sculpture-location>span{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.sculpture-name{font:400 clamp(104px,11vw,164px)/.84 var(--serif);letter-spacing:-.035em;margin:0 0 34px}
+.sculpture-promise{font-size:clamp(23px,2.1vw,30px);font-weight:500;letter-spacing:-.035em;line-height:1.3}
+.sculpture-bio{color:var(--muted);font-size:15px;line-height:1.7;margin-top:14px}
+.sculpture-actions{display:flex;align-items:center;gap:26px;font-size:14px;margin-top:28px}
+.sculpture-actions a{text-decoration:none}.sculpture-primary{display:flex;align-items:center;gap:24px;background:var(--ink);color:var(--bg);padding:13px 19px;border-radius:3px;transition:background .2s}.sculpture-primary:hover{background:var(--accent)}.sculpture-resume{color:var(--muted)}.sculpture-resume:hover{color:var(--ink)}
+.sculpture-credentials{font-size:12px;line-height:1.8;margin-top:30px;color:var(--ink)}.sculpture-credentials span{color:var(--muted)}.sculpture-credentials p>span:first-child{display:inline-block;min-width:72px}.sculpture-credentials p:first-child>span:last-child{margin-left:12px;font-size:11px}
+.sculpture-art{position:absolute;width:68%;height:88%;right:-7%;top:5%;pointer-events:none;isolation:isolate}
+.sculpture-art canvas,.sculpture-fallback{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:contain}
+.sculpture-art canvas{opacity:0;transition:opacity .7s}.sculpture-art.is-ready canvas{opacity:1}.sculpture-art.is-ready .sculpture-fallback{opacity:0}.sculpture-fallback{transition:opacity .7s}
+.sculpture-art.is-ready canvas{pointer-events:auto;cursor:grab;touch-action:pan-y pinch-zoom;user-select:none;-webkit-user-select:none}
+.sculpture-art.is-dragging canvas{cursor:grabbing}
+.sculpture-art canvas:focus-visible{outline:1px solid var(--accent);outline-offset:-12px;border-radius:12px}
+.sculpture-bottom{position:absolute;bottom:30px;left:0;right:0;display:flex;justify-content:space-between;align-items:center;font-family:Geist,Arial,sans-serif;font-size:12px;border-top:1px solid var(--border);padding-top:20px;z-index:3}.sculpture-bottom a{text-decoration:none;color:var(--muted)}.sculpture-bottom a:hover{color:var(--ink)}.sculpture-scroll{display:flex;align-items:center;gap:14px}.scroll-stroke{width:1px;height:25px;background:linear-gradient(var(--accent),transparent);transform-origin:top}
+.no-js #hero{height:100svh}.no-js .hero-sticky{position:relative}
+.no-js .nav-toggle{display:none}
+@media(max-height:780px) and (min-width:761px){.hero-sticky{min-height:650px}.sculpture-name{font-size:112px;margin-bottom:24px}.sculpture-location{margin-bottom:25px}.sculpture-promise{font-size:24px}.sculpture-credentials{margin-top:20px}}
+@media(max-width:1050px){.sculpture-name{font-size:118px}.sculpture-art{right:-10%;width:72%}.sculpture-location{font-size:11px}}
+@media(max-width:760px){#hero{height:145svh}.hero-sticky{min-height:740px}#hero .sculpture-layout{display:block;padding-top:108px;padding-bottom:65px}.sculpture-copy{display:grid;grid-template-columns:1fr 1fr;column-gap:22px}.sculpture-location{grid-column:1/-1;margin-bottom:27px;font-size:11px}.sculpture-name{grid-row:2/4;font-size:clamp(90px,16vw,128px);margin:0}.sculpture-promise{font-size:21px;align-self:center}.sculpture-bio{font-size:12px;margin-top:10px}.sculpture-actions{grid-column:1/-1;margin-top:25px}.sculpture-credentials{grid-column:1/-1;margin-top:20px;font-size:11px}.sculpture-art{top:43%;height:51%;width:110%;right:-9%}.sculpture-bottom{bottom:20px;padding-top:15px;font-size:11px}.no-js #hero{height:auto}.no-js .hero-sticky{height:100svh;min-height:740px}.no-js nav .shell{flex-wrap:wrap;gap:16px}.no-js .nav-links{display:flex;position:static;flex-direction:row;flex-wrap:wrap;background:none;gap:14px}.no-js .nav-links a{font-size:11px}}
+@media(max-width:390px){.sculpture-copy{column-gap:16px}.sculpture-name{font-size:88px}.sculpture-promise{font-size:19px}.sculpture-bio{font-size:11px}.sculpture-actions{font-size:13px}.sculpture-credentials{font-size:10px}.sculpture-art{top:47%;height:45%}}
+@media(prefers-reduced-motion:reduce){#hero{height:auto;min-height:100svh}.hero-sticky{position:relative}.sculpture-art canvas,.sculpture-fallback{transition:none}}
